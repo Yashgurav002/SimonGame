@@ -92,19 +92,21 @@ public  class SimonGame extends JFrame implements ActionListener {
 
         // Check if the current button matches the current step in the sequence
         if (button.getIndex() == sequence.get(currentStep)) {
-            currentStep++; // Player successfully matched this step
-
-            // If the player has matched the entire sequence
+            currentStep++;
             if (currentStep == sequence.size()) {
-                playerTurn = false; // Player's turn is over
-                JOptionPane.showMessageDialog(this, "Good job! Starting round :"+sequence.size());
-                newRound(); // Start the next round
+                playerTurn = false;
+                JOptionPane.showMessageDialog(this, "Good job! Starting the next round.");
+                newRound();
             }
         } else {
             // Player made an incorrect move
+            String playerName = JOptionPane.showInputDialog(this, "Game Over! Enter your name:");
+            if (playerName != null && !playerName.trim().isEmpty()) {
+                DatabaseHandler.saveScore(playerName, sequence.size() - 1);
+            }
             JOptionPane.showMessageDialog(this, "Game Over! Your Score: " + (sequence.size() - 1));
-            sequence.clear(); // Clear the sequence to reset the game
-            newRound(); // Start a new game
+            sequence.clear();
+            newRound();
         }
     }
 
